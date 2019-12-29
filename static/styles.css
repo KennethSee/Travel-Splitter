@@ -1,0 +1,73 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+
+/* colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+
+main .form-control
+{
+    /* center form controls */
+    display: inline-block;
+
+    /* override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* center contents */
+    text-align: center;
+}
+
+main img
+{
+    /* constrain images on small screens */
+    max-width: 100%;
+}
+
+#table_head
+{
+    background-color: #89cff0;
+}
+
+#trip_header
+{
+    color: #89cff0;
+    font-style: italic;
+}
+
+#update_paid
+{
+    white-space: nowrap;
+}
+
+#currency_selector
+{
+    width: 120px;
+}
+
+#person_selector
+{
+    width: 360px;
+}
+
+#sum_owed
+{
+    color: #008000;
+    font-style: italic;
+}
+
+#sum_owing
+{
+    color: #FF0000;
+    font-style: italic;
+}

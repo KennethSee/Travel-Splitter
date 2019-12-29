@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Trip
+{% endblock %}
+
+{% block main %}
+<h1><p>Create Trip</p></h1>
+<form action="/add_trip" method="post">
+    <div class="form-group">
+        Trip Name: <input autocomplete="off" autofocus class="form-control" name="trip" placeholder="Trip Name" type="text">
+    </div>
+    <div>
+        <select class="custom-select" name="currency">
+            <option selected>Primary Currency</option>
+            {% for cur in cur_list %}
+            <option value="{{ cur }}">{{ cur }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <div>
+        <button class="btn btn-primary" type="submit">Create Trip</button>
+    </div>
+</form>
+{% endblock %}

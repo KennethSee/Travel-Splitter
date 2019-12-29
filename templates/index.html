@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <h1><p>Summary</p></h1>
+    <br>
+    <h2><p>Your trips</p></h2>
+    <div>
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Trip Name</th>
+                        <th scope="col">Primary Currency</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trip in trips %}
+                    <tr>
+                        <td>{{ trip[1] }}</td>
+                        <td>{{ trip[2] }}</td>
+                        <td><button id="{{ trip[0] }}" class="Index_Manage">Manage Trip</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+    <br>
+    <h2><p>Total amount owed/owing</p></h2>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Owed</th>
+                    <th scope="col">Owing</th>
+                    <th scope="col">Net</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="sum_owed">{{ owed }}</td>
+                    <td id="sum_owing">{{ owing }}</td>
+                    <td>{{ net }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $( "button.Index_Manage" ).click(function(event) {
+                reply_click(event.target.id);
+            });
+            
+            function reply_click(clicked_id){
+                window.location.href = '../update/' + clicked_id;
+            };
+        });
+    </script>
+{% endblock %}

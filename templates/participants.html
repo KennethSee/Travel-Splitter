@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manage Participants
+{% endblock %}
+
+{% block main %}
+    <meta id="trip-data" data="{{ trip_id }}">
+
+    <h1><p>Manage Participants</p></h1>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">People currently on this trip</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participant in participants %}
+                <tr>
+                    <td>{{ participant[0] }}</td>
+                    <td><button id="{{ participant[1] }}" class="Remove_Button">Remove</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <form action="/participants/{{ trip_id }}" method="post">
+        <div class="form-group">
+            Add participant <input autocomplete="off" autofocus class="form-control" name="participant" placeholder="Username" type="text">
+        </div>
+        <br>
+        <div>
+            <button class="btn btn-primary" type="submit">Add Participant</button>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        var djangoData = document.getElementById("trip-data").getAttribute('data');
+        $(document).ready(function() {
+            function reply_click(clicked_id) {
+                // confirm deletion
+                var confirm_delete = confirm("Are you sure you want to remove participant from trip?");
+                // if cancelled, end function
+                if(confirm_delete == false)
+                {
+                    return false;
+                }
+                // remove user from trip_connect and transaction tables
+                $.getJSON("/remove", {
+                    participant_id: clicked_id,
+                    trip_id: djangoData
+                }, function(data) {
+                    if(data.remove_success === true){
+                        alert("Successfully removed participant");
+                    }
+                });
+                // reload page
+                location.reload();
+                return true;
+            };
+
+            $( "button.Remove_Button" ).click(function(event) {
+                reply_click(event.target.id);
+            });
+        });
+    </script>
+{% endblock %}

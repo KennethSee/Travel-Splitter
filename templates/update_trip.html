@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Update Trip
+{% endblock %}
+
+{% block main %}
+
+<meta id="my-data" data="{{ user_id }}" trip-id="{{ trip_id }}">
+
+<h1><p>Update Trip</p></h1>
+<h2 id = "trip_header"><p>{{ trip_name }}</p></h2>
+<p><button type="button" class="btn btn-danger" id="delete_trip">Delete Trip</button></p>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">People on this trip</th>
+                <th scope="col">Amount Owed/(Owing)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for balance in balances %}
+            <tr>
+                <td>{{ balance[1] }}</td>
+                <td>{{ balance[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<form action="/update/{{ trip_id }}" method="post">
+    <div class="form-group" id="update_paid">
+        Paid <input autocomplete="off" autofocus class="form-control" name="amount" type="number" step="0.01">
+        <select class="custom-select" name="currency" id="currency_selector">
+            <option selected>Currency</option>
+            {% for cur in cur_list %}
+            <option value="{{ cur }}">{{ cur }}</option>
+            {% endfor %}
+        </select> for 
+        <select class="custom-select" name="receipient" id="person_selector">
+                <option selected>Receipient</option>
+                {% for person in balances %}
+                <option value="{{ person[0] }}">{{ person[1] }}</option>
+                {% endfor %}
+        </select>
+    </div>
+    <div>
+        Description: <input autocomplete="off" autofocus class="form-control" name="description" type="text">
+    </div>
+    <br>
+    <div>
+        <button class="btn btn-primary" type="submit" name="submit">Add transaction</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    // var djangoData = document.getElementById("my-data").getAttribute('data');
+    var tripID = Number(document.getElementById("my-data").getAttribute('trip-id'));
+    // var e = document.getElementById("person_selector");
+    // var idUser = e.value;
+    // document.frm.submit.onclick = function(){
+    //     if (idUser == djangoData)
+    //     {
+    //         alert("You cannot lend money to yourself!");
+    //         return false;
+    //     };
+
+    //     return true;
+    // };
+
+    $(document).ready(function() {
+        $( "#delete_trip" ).click(function(event) {
+            var confirm_delete = confirm("Are you sure you want to delete this trip?");
+            // if cancelled, end function
+            if(confirm_delete == false)
+            {
+                return false;
+            }
+            // remove user from trip_connect and transaction tables
+            $.getJSON("/remove_trip", {
+                trip_id: tripID
+            }, function(data) {
+                if(data.remove_success === true){
+                    alert("Successfully removed trip");
+                }
+            });
+            // back to homepage
+            window.location.href = "/";
+            return true;
+        });
+    });
+
+</script>
+
+<br>
+<br>
+<h3><p>Existing Transactions</p></h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Lender</th>
+                <th scope="col">Borrower</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Time</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction[0] }}</td>
+                <td>{{ transaction[1] }}</td>
+                <td>{{ transaction[2] }}</td>
+                <td>{{ transaction[3] }}</td>
+                <td>{{ transaction[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br>
+<div>
+    <a href="../participants/{{ trip_id }}" class="btn btn-info">Manage trip participants</a>
+</div>
+
+{% endblock %}
